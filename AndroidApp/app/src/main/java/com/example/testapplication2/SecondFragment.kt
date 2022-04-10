@@ -51,9 +51,9 @@ class SecondFragment : Fragment() {
         val nameObserver = Observer<String> { newName ->
             resultsTextView.text = newName
         }
-        model.getInfo().observe(this.viewLifecycleOwner, nameObserver)
+        model.getInfoPost().observe(this.viewLifecycleOwner, nameObserver)
         buttonForData.setOnClickListener {
-
+            model.makePostRequest()
         }
     }
 

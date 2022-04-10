@@ -19,10 +19,10 @@ POST http://localhost:8080/
 Content-Type: application/json
 
 {
-  "id": 1,
-  "taskName": "TestFromProgram1",
-  "endDate": "2022-04-1",
-  "repeat": 3
+  "id":1,
+  "taskName":"TestFromProgram1",
+  "endDate":"2022-04-1",
+  "repeat":3
 }
 
 ### Get all the messages

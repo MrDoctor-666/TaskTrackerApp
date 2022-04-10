@@ -1,5 +1,6 @@
 package com.example.testapplication2
 
+import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -41,7 +42,22 @@ class InternetConnect() {
         return Result.Error(Exception("Cannot open HttpURLConnection"))
     }
 
-    fun postTaskRequest() : Result<String>{
-        TODO()
+    fun postTaskRequest(toSend : String) : Result<String>{
+        val url = URL(taskURL2)
+        val urlCon = url.openConnection() as HttpURLConnection
+        urlCon.requestMethod = "POST"
+        urlCon.setRequestProperty("Content-Type", "application/json")
+        urlCon.setRequestProperty("Accept", "application/json")
+
+        val outputStreamWriter = OutputStreamWriter(urlCon.outputStream)
+        outputStreamWriter.write(toSend)
+        outputStreamWriter.flush()
+
+        val responseCode = urlCon.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val response = urlCon.inputStream.bufferedReader().use { it.readText() }
+            return Result.Success(response)
+        }
+        return Result.Error(Exception("Cannot open HttpURLConnection"))
     }
 }
