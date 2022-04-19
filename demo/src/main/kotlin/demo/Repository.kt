@@ -16,12 +16,30 @@ class TaskRepositoryTemp() {
     fun allTasks() : List<Task> = list
 
     fun postTask(task : Task) {list.add(task)}
+
+    fun find(id : String) : Task? {
+        return list.find {it.id == id}
+    }
+
+    fun deleteByID(id : String){ list.remove(find(id) ?: return)}
+
+    fun delete(task : Task) { list.remove(task) }
+
+    fun changeRepeat(id: String, repeat: Int){
+        val task = find(id) ?: return
+        task.repeat = repeat
+    }
+
+    fun changeEndDate(id: String, endDate: String){
+        val task = find(id) ?: return
+        task.endDate = endDate
+    }
 }
 
 //@Table("TASKS")
 data class Task(
     //@Id val id: Int,
-    val id: Int,
+    var id: String,
     var taskName: String,
     var endDate : String,
     var repeat : Int = 1,

@@ -21,9 +21,16 @@ Content-Type: application/json
 {
   "id":1,
   "taskName":"TestFromProgram1",
-  "endDate":"2022-04-1",
-  "repeat":3
+  "endDate":"2022-04-01",
+  "repeat":3,
+  "repeatDays": 2
 }
+
+### Complete Task Post
+POST http://localhost:8080/display
+Content-Type: application/json
+
+"ca41eff3-628f-45bc-b9f4-a1bbb48fad6d"
 
 ### Get all the messages
 GET http://localhost:8080/

@@ -26,4 +26,10 @@ class MessageResource(val service: TaskService) {
 	fun post(@RequestBody task: Task) {
 		service.post(task)
 	}
+
+	@PostMapping("/display")
+	fun completeTask(@RequestBody id : String) {
+		val sendID = if (id[0] == '"') id.substring(1, id.length - 1) else id
+		service.completeTask(sendID)
+	}
 }

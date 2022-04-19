@@ -15,6 +15,7 @@ class InternetConnect() {
     //this one is not safe??
     private val taskURL = "http://192.168.56.1:8080/"
     private val taskURL2 = "http://192.168.0.101:8080/"
+    private val taskURL3 = "http://192.168.5.175:8080/"
     /*fun makeAllTaskGetRequest(
         jsonBody: String
     ): Result<String> {
@@ -31,7 +32,7 @@ class InternetConnect() {
     }*/
 
     fun getTasksRequest() : Result<String> {
-        val url = URL(taskURL2)
+        val url = URL(taskURL3)
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.setRequestProperty("Accept", "application/json")
         val responseCode = urlCon.responseCode
@@ -43,7 +44,7 @@ class InternetConnect() {
     }
 
     fun postTaskRequest(toSend : String) : Result<String>{
-        val url = URL(taskURL2)
+        val url = URL(taskURL3)
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.requestMethod = "POST"
         urlCon.setRequestProperty("Content-Type", "application/json")
