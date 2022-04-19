@@ -35,12 +35,14 @@ class TaskViewModel : ViewModel() {
         }
     }
 
-    fun makePostRequest(){
+    fun makePostRequest(
+        json : String
+    ){
         infoPost.postValue("Waiting")
         val connectManager = InternetConnect()
         viewModelScope.launch(Dispatchers.IO) {
             val result = try {
-                connectManager.postTaskRequest(jsonCreator().testJSON2())
+                connectManager.postTaskRequest(json)
             } catch(e: Exception) {
                 Result.Error(e)
             }

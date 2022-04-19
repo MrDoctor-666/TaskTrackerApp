@@ -2,7 +2,7 @@ package com.example.testapplication2
 
 import org.json.JSONObject
 
-class jsonCreator {
+class JSONCreator {
 
     fun testJSON () : String {
         val jsonObject = JSONObject()
@@ -20,6 +20,19 @@ class jsonCreator {
                 "  \"taskName\": \"TestFromProgram1\",\n" +
                 "  \"endDate\": \"2022-04-1\",\n" +
                 "  \"repeat\": 3\n" +
+                "}"
+    }
+
+    fun create(
+        taskName : String,
+        endDate : String,
+        repeat : Int
+    ) : String {
+        return "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"taskName\": \"$taskName\",\n" +
+                "  \"endDate\": \"$endDate\",\n" +
+                "  \"repeat\": $repeat\n" +
                 "}"
     }
 }

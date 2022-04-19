@@ -46,14 +46,19 @@ class SecondFragment : Fragment() {
 
 
         model =  ViewModelProvider(this).get(TaskViewModel::class.java)
-        resultsTextView = binding.textviewSecond
-        buttonForData = binding.buttonSave
+        //resultsTextView = binding.textviewSecond
+        //buttonForData = binding.buttonSave
         val nameObserver = Observer<String> { newName ->
-            resultsTextView.text = newName
+            binding.textviewSecond.text = newName
         }
         model.getInfoPost().observe(this.viewLifecycleOwner, nameObserver)
-        buttonForData.setOnClickListener {
-            model.makePostRequest()
+        binding.buttonSave.setOnClickListener {
+            //model.makePostRequest(JSONCreator().testJSON2())
+            model.makePostRequest(JSONCreator().create(
+                binding.editTextTaskName.text.toString(),
+                binding.editEndDate.text.toString(),
+                binding.editRepeatDecimal.text.toString().toInt()
+            ))
         }
     }
 
