@@ -19,17 +19,23 @@ class MessageResource(val service: TaskService) {
 	@GetMapping
 	fun index(): List<Task> = service.allTasks()
 
-    @GetMapping("/display")
-    fun display() : List<DisplayTask> = service.allTasksDisplay()
-
 	@PostMapping
 	fun post(@RequestBody task: Task) {
 		service.post(task)
 	}
 
-	@PostMapping("/display")
+    @GetMapping("/display")
+    fun display() : List<DisplayTask> = service.allTasksDisplay()
+
+	@PostMapping("/display/complete")
 	fun completeTask(@RequestBody id : String) {
 		val sendID = if (id[0] == '"') id.substring(1, id.length - 1) else id
 		service.completeTask(sendID)
+	}
+
+	@PostMapping("/display/skip")
+	fun skipTask(@RequestBody id : String){
+		val sendID = if (id[0] == '"') id.substring(1, id.length - 1) else id
+		service.skipTask(sendID)
 	}
 }

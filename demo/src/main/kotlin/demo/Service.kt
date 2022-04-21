@@ -41,8 +41,21 @@ class TaskService(val db: TaskRepository) {
         } else displayTasks.add(DisplayTask(task))
     }
 
-    fun skipTask(id: Int) {
-        TODO() //change in database
+    fun skipTask(id: String) {
+        //TODO() change in database
+        //TODO() skip to given amount of days
+        val daysToAdd : Long = 1
+        val task: DisplayTask = displayTasks.find { it.thisTaskID == id } ?: return
+        if (!task.initialTask.canSkip)return
+
+        val date = LocalDate.parse(task.initialTask.endDate, DateTimeFormatter.ISO_DATE)
+        taskRep.changeEndDate(task.initialTask.id, date.plusDays(daysToAdd).toString())
+
+        var curTask : DisplayTask = task
+         while (true) {
+             curTask.date = curTask.date.plusDays(daysToAdd)
+             curTask = displayTasks.find { it.thisTaskID == curTask.nextTaskID } ?: break
+         }
     }
 
     fun dayEnd() {
@@ -53,16 +66,14 @@ class TaskService(val db: TaskRepository) {
         //TODO() delete from database
         val task: DisplayTask = displayTasks.find { it.thisTaskID == id } ?: return
 
-        val initialTask: Task = taskRep.find(task.initialTaskID) ?: return
-
-        if (initialTask.repeat == 1) taskRep.delete(initialTask)
+        if (task.initialTask.repeat == 1) taskRep.delete(task.initialTask)
 
         if (task.nextTaskID != null) {
             val next: DisplayTask = displayTasks.find { it.thisTaskID == task.nextTaskID }!!
 
             next.previousTaskID = null
-            taskRep.changeRepeat(initialTask.id, initialTask.repeat - 1)
-            taskRep.changeEndDate(initialTask.id, next.date.toString())
+            taskRep.changeRepeat(task.initialTask.id, task.initialTask.repeat - 1)
+            taskRep.changeEndDate(task.initialTask.id, next.date.toString())
         }
 
         displayTasks.remove(task)
@@ -70,7 +81,7 @@ class TaskService(val db: TaskRepository) {
 }
 
 class DisplayTask {
-    val initialTaskID: String //if in database, ref by id
+    val initialTask: Task
     val thisTaskID: String
     var date: LocalDate
     var nextTaskID: String? //do I need this?
@@ -78,7 +89,7 @@ class DisplayTask {
 
 
     constructor(task: Task, next: DisplayTask? = null, prev: DisplayTask? = null) {
-        this.initialTaskID = task.id
+        this.initialTask = task
         thisTaskID = UUID.randomUUID().toString()
         date = LocalDate.parse(task.endDate, DateTimeFormatter.ISO_DATE)
         nextTaskID = next?.thisTaskID
