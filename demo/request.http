@@ -39,6 +39,10 @@ Content-Type: application/json
 
 "601cf4f2-6a35-4caf-b7e6-fd5be9feba31"
 
+### End Day
+POST http://localhost:8080/dayEnd
+Content-Type: application/json
+
 ### Get all the messages
 GET http://localhost:8080/
 

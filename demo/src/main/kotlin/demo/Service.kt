@@ -8,6 +8,7 @@ import java.util.*
 @Service
 class TaskService(val db: TaskRepository) {
 
+    //TODO() maybe create list with overdue tasks (completed or not)
     val taskRep = TaskRepositoryTemp()
     var displayTasks: MutableList<DisplayTask> = mutableListOf()
 
@@ -42,28 +43,41 @@ class TaskService(val db: TaskRepository) {
     }
 
     fun skipTask(id: String) {
-        //TODO() change in database
+        //TODO() change in database when skip
         //TODO() skip to given amount of days
-        val daysToAdd : Long = 1
+        val daysToAdd: Long = 1
         val task: DisplayTask = displayTasks.find { it.thisTaskID == id } ?: return
-        if (!task.initialTask.canSkip)return
+        if (!task.initialTask.canSkip) return
 
         val date = LocalDate.parse(task.initialTask.endDate, DateTimeFormatter.ISO_DATE)
         taskRep.changeEndDate(task.initialTask.id, date.plusDays(daysToAdd).toString())
 
-        var curTask : DisplayTask = task
-         while (true) {
-             curTask.date = curTask.date.plusDays(daysToAdd)
-             curTask = displayTasks.find { it.thisTaskID == curTask.nextTaskID } ?: break
-         }
+        var curTask: DisplayTask = task
+        while (true) {
+            curTask.date = curTask.date.plusDays(daysToAdd)
+            curTask = displayTasks.find { it.thisTaskID == curTask.nextTaskID } ?: break
+        }
     }
 
     fun dayEnd() {
-        TODO() //change/delete from database
+        //TODO() change/delete from database on end day
+        displayTasks.clear()
+
+        allTasks().forEach {
+            val date = LocalDate.parse(it.endDate, DateTimeFormatter.ISO_DATE)
+            if (date.isBefore(LocalDate.now()))
+                if (it.canSkip) {
+                    taskRep.changeEndDate(
+                        it.id,
+                        LocalDate.now().toString()
+                    )
+                } else taskRep.delete(it)
+            createDisplay(it)
+        }
     }
 
     fun completeTask(id: String) {
-        //TODO() delete from database
+        //TODO() delete from database when complete
         val task: DisplayTask = displayTasks.find { it.thisTaskID == id } ?: return
 
         if (task.initialTask.repeat == 1) taskRep.delete(task.initialTask)
@@ -77,30 +91,5 @@ class TaskService(val db: TaskRepository) {
         }
 
         displayTasks.remove(task)
-    }
-}
-
-class DisplayTask {
-    val initialTask: Task
-    val thisTaskID: String
-    var date: LocalDate
-    var nextTaskID: String? //do I need this?
-    var previousTaskID: String?
-
-
-    constructor(task: Task, next: DisplayTask? = null, prev: DisplayTask? = null) {
-        this.initialTask = task
-        thisTaskID = UUID.randomUUID().toString()
-        date = LocalDate.parse(task.endDate, DateTimeFormatter.ISO_DATE)
-        nextTaskID = next?.thisTaskID
-        previousTaskID = prev?.thisTaskID
-    }
-
-    constructor(task: Task, endDate: LocalDate, next: DisplayTask? = null, prev: DisplayTask? = null) : this(
-        task,
-        next,
-        prev
-    ) {
-        this.date = endDate
     }
 }

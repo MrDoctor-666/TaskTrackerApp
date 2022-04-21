@@ -9,7 +9,7 @@ interface TaskRepository : CrudRepository<Task, String>{
     fun allTasks(): List<Task>
 }
 
-class TaskRepositoryTemp() {
+class TaskRepositoryTemp {
 
     private var list : MutableList<Task> = mutableListOf()
 
