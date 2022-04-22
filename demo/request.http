@@ -1,21 +1,21 @@
 ### Post 'Hello!"
-POST http://localhost:8080/
+POST http://localhost:8080/add
 Content-Type: application/json
 
 {
   "id": 2,
   "taskName": "TestFromProgram",
   "endDate": "2022-03-28",
-  "repeat": 1,
+  "repeat": 2,
   "canSkip": false,
-  "repeatDays": 0,
+  "repeatDays": 7,
   "tag": null,
   "color": 0,
   "note": null
 }
 
 ### Post2
-POST http://localhost:8080/
+POST http://localhost:8080/add
 Content-Type: application/json
 
 {

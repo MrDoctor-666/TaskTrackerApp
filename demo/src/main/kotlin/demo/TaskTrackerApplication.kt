@@ -19,13 +19,27 @@ class MessageResource(val service: TaskService) {
     @GetMapping
     fun index(): List<Task> = service.allTasks()
 
-    @PostMapping
+    @PostMapping("/add")
     fun post(@RequestBody task: Task) {
         service.post(task)
     }
 
+    @PostMapping("/delete")
+    fun deleteTask(@RequestBody task: Task) {
+        service.deleteTask(task)
+    }
+
+    @PostMapping("/dayEnd")
+    fun dayEnd() {
+        service.dayEnd()
+    }
+
+    //display tasks
     @GetMapping("/display")
     fun display(): List<DisplayTask> = service.allTasksDisplay()
+
+    @GetMapping("/display/today")
+    fun displayToday(): List<DisplayTask> = service.allTasksToday()
 
     @PostMapping("/display/complete")
     fun completeTask(@RequestBody id: String) {
@@ -37,10 +51,5 @@ class MessageResource(val service: TaskService) {
     fun skipTask(@RequestBody id: String) {
         val sendID = if (id[0] == '"') id.substring(1, id.length - 1) else id
         service.skipTask(sendID)
-    }
-
-    @PostMapping("/dayEnd")
-    fun dayEnd() {
-        service.dayEnd()
     }
 }

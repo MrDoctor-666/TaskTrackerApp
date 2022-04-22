@@ -24,6 +24,13 @@ class TaskService(val db: TaskRepository) {
 
     fun allTasksDisplay(): List<DisplayTask> = displayTasks.sortedBy { it.date }
 
+    fun allTasksToday() : List<DisplayTask> = displayTasks.filter { it.date == LocalDate.now() }
+
+    fun deleteTask(task: Task) {
+        displayTasks.removeIf { it.initialTask.id == task.id }
+        taskRep.delete(task)
+    }
+
     fun createDisplay(task: Task) {
         val untilDate: LocalDate = LocalDate.now().plusYears(2)
 
@@ -71,7 +78,12 @@ class TaskService(val db: TaskRepository) {
                         it.id,
                         LocalDate.now().toString()
                     )
-                } else taskRep.delete(it)
+                } else
+                    if (it.repeat == 1) taskRep.delete(it)
+                    else {
+                        taskRep.changeRepeat(it.id, it.repeat - 1)
+                        taskRep.changeEndDate(it.id, date.plusDays(it.repeatDays.toLong()).toString())
+                    }
             createDisplay(it)
         }
     }
