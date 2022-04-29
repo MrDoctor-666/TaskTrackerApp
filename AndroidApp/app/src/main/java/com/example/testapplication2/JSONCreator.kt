@@ -5,13 +5,14 @@ import org.json.JSONObject
 class JSONCreator {
 
     fun testJSON () : String {
+
         val jsonObject = JSONObject()
         jsonObject.put("id", 33)
         jsonObject.put("taskName:", "TestFromAndroid")
         jsonObject.put("endDate", "2022-04-13")
         jsonObject.put("repeat", 5)
 
-        return jsonObject.toString()
+        return jsonObject.toString(1)
     }
 
     fun testJSON2() : String {

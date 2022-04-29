@@ -1,16 +1,18 @@
 package com.example.testapplication2
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.testapplication2.databinding.FragmentFirstBinding
+import org.json.JSONObject
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -56,7 +58,7 @@ class FirstFragment : Fragment() {
         }
 
         model =  ViewModelProvider(this).get(TaskViewModel::class.java)
-        resultsTextView = binding.textviewFirst
+        resultsTextView = binding.textviewFirstName
         displayData = binding.buttonGet
         val nameObserver = Observer<String> { newName ->
             // Update the UI, in this case, a TextView.
@@ -66,6 +68,12 @@ class FirstFragment : Fragment() {
         displayData.setOnClickListener {
             model.makeAllTaskGetRequest()
         }
+
+        val lc = LayoutCreator(this.requireContext())
+
+
+        binding.parentLayout.addView(lc.createDayLayout("12.02.2023", listOf("ONE", "TWO", "THREE")))
+        binding.parentLayout.addView(lc.createDayLayout("2022-05-05", listOf("zero", "two", "five")))
     }
 
     override fun onDestroyView() {

@@ -16,20 +16,6 @@ class InternetConnect() {
     private val taskURL = "http://192.168.56.1:8080/"
     private val taskURL2 = "http://192.168.0.101:8080/"
     private val taskURL3 = "http://192.168.5.175:8080/"
-    /*fun makeAllTaskGetRequest(
-        jsonBody: String
-    ): Result<String> {
-        val url = URL(loginUrl)
-        (url.openConnection() as? HttpURLConnection)?.run {
-            requestMethod = "POST"
-            setRequestProperty("Content-Type", "application/json; utf-8")
-            setRequestProperty("Accept", "application/json")
-            doOutput = true
-            outputStream.write(jsonBody.toByteArray())
-            return Result.Success(inputStream.toString())
-        }
-        return Result.Error(Exception("Cannot open HttpURLConnection"))
-    }*/
 
     fun getTasksRequest() : Result<String> {
         val url = URL(taskURL3)
