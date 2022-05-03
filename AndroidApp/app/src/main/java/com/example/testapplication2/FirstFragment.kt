@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.testapplication2.databinding.FragmentFirstBinding
-import org.json.JSONObject
 
 
 /**
@@ -30,6 +29,8 @@ class FirstFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val testStr = "[{\"initialTask\":{\"thisTaskid\":\"217884b8-a526-4664-9d76-f7162ee1aca1\",\"taskName\":\"TestFromProgram1\",\"endDate\":\"2022-04-01\",\"repeat\":3,\"canSkip\":true,\"repeatDays\":2,\"tag\":null,\"color\":0,\"note\":null},\"thisTaskID\":\"c2\",\"date\":\"2022-04-08\",\"nextTaskID\":\"fc709856-6096-4af1-813d-bd85749caa39\",\"previousTaskID\":null}, {\"initialTask\":{\"thisTaskid\":\"217884b8-a526-4664-9d76-f7162ee1aca1\",\"taskName\":\"TestFromProgram1\",\"endDate\":\"2022-04-01\",\"repeat\":3,\"canSkip\":true,\"repeatDays\":2,\"tag\":null,\"color\":0,\"note\":null},\"thisTaskID\":\"cf2f8239-f251-47c6-beb9-2a495ba39b72\",\"date\":\"2022-04-01\",\"nextTaskID\":\"fc709856-6096-4af1-813d-bd85749caa39\",\"previousTaskID\":null}]"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,8 +72,22 @@ class FirstFragment : Fragment() {
 
         val lc = LayoutCreator(this.requireContext())
 
+        val a = JSONCreator().parseListTasksJSON(testStr) //all tasks
+        var curDate = a[0].date
+        //val tempList = mutableListOf<Task>()
+        val tempList = mutableListOf<String>()
 
-        binding.parentLayout.addView(lc.createDayLayout("12.02.2023", listOf("ONE", "TWO", "THREE")))
+        a.forEach {
+            if (curDate == it.date) tempList.add(it.thisTaskID)
+            else {
+                binding.parentLayout.addView(lc.createDayLayout(curDate, tempList))
+                curDate = it.date
+                tempList.clear()
+                tempList.add(it.thisTaskID)
+            }
+        }
+        binding.parentLayout.addView(lc.createDayLayout(curDate, tempList))
+
         binding.parentLayout.addView(lc.createDayLayout("2022-05-05", listOf("zero", "two", "five")))
     }
 

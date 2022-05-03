@@ -1,5 +1,6 @@
 package com.example.testapplication2
 
+import org.json.JSONArray
 import org.json.JSONObject
 
 class JSONCreator {
@@ -36,4 +37,40 @@ class JSONCreator {
                 "  \"repeat\": $repeat\n" +
                 "}"
     }
+
+    fun parseListTasksJSON(json: String) : List<Task> {
+        val taskList = mutableListOf<Task>()
+        val jsonArr = JSONArray(json)
+        for (i in 0 until jsonArr.length())
+            taskList.add(parseSingleTaskJSON(jsonArr[i].toString()))
+
+        return taskList.sortedBy { it.date }
+    }
+
+
+    private fun parseSingleTaskJSON(json : String) : Task {
+        val jsonObj = JSONObject(json)
+        val initialT = jsonObj.getJSONObject("initialTask")
+
+        val prevTaskID : String? = if (jsonObj.isNull("prevTaskID")) null
+        else jsonObj.getString("prevTaskID")
+
+        return Task(
+            initialT,
+            jsonObj.getString("thisTaskID"),
+            jsonObj.getString("date"),
+            if (jsonObj.isNull("nextTaskID")) null else jsonObj.getString("nextTaskID"),
+            prevTaskID
+        )
+    }
+
+}
+
+class Task(
+    val initialTask : JSONObject,
+    val thisTaskID : String,
+    val date: String,
+    val nextTaskID : String?,
+    val prevTaskID : String?
+){
 }

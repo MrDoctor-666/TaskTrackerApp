@@ -24,7 +24,7 @@ class TaskService(val db: TaskRepository) {
 
     fun allTasksDisplay(): List<DisplayTask> = displayTasks.sortedBy { it.date }
 
-    fun allTasksToday() : List<DisplayTask> = displayTasks.filter { it.date == LocalDate.now() }
+    fun allTasksToday() : List<DisplayTask> = displayTasks.filter { it.date == LocalDate.now()}
 
     fun deleteTask(task: Task) {
         displayTasks.removeIf { it.initialTask.id == task.id }
