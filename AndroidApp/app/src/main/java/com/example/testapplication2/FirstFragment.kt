@@ -1,5 +1,6 @@
 package com.example.testapplication2
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.testapplication2.databinding.FragmentFirstBinding
+import java.time.LocalDate
 
 
 /**
@@ -53,8 +55,7 @@ class FirstFragment : Fragment() {
             //eventDetails.putString("my_message", "Clicked that button");
             //analytics.logEvent("test_button_click", eventDetails);
 
-
-            binding.checkBoxFirst.isChecked = true;
+            binding.checkBoxFirst.isChecked = true
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
@@ -64,20 +65,47 @@ class FirstFragment : Fragment() {
         val nameObserver = Observer<String> { newName ->
             // Update the UI, in this case, a TextView.
             resultsTextView.text = newName
+            tasksDisplay(newName)
         }
         model.getInfo().observe(this.viewLifecycleOwner, nameObserver)
         displayData.setOnClickListener {
             model.makeAllTaskGetRequest()
         }
 
+        tasksDisplay(testStr)
+    }
+
+    private fun tasksDisplay(tasksString: String){
+
+        if (!JSONCreator().checkIfJSON(tasksString)) return
+
+        binding.parentLayout.removeAllViews()
         val lc = LayoutCreator(this.requireContext())
 
-        val a = JSONCreator().parseListTasksJSON(testStr) //all tasks
-        var curDate = a[0].date
-        //val tempList = mutableListOf<Task>()
-        val tempList = mutableListOf<String>()
+        val a = JSONCreator().parseListTasksJSON(tasksString) //all tasks
+        var curDate = LocalDate.parse(a[0].date)
+        var i = 0
+        val tempList = mutableListOf<Task>()
 
-        a.forEach {
+        while(i < a.count()){
+            when {
+                curDate.toString() == a[i].date -> { tempList.add(a[i]); i++}//
+                a.find { it.date == curDate.toString() } == null -> { //если такой даты нет
+                    binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.toString()))
+                    curDate = curDate.plusDays(1)
+                }
+                else -> { //если такая дата есть, но элементы закончились
+                    binding.parentLayout.addView(lc.createDayLayout(curDate.toString(), tempList))
+                    curDate = curDate.plusDays(1)
+                    tempList.clear()
+                    tempList.add(a[i])
+                    i++
+                }
+            }
+
+        }
+
+        /*a.forEach {
             if (curDate == it.date) tempList.add(it.thisTaskID)
             else {
                 binding.parentLayout.addView(lc.createDayLayout(curDate, tempList))
@@ -85,10 +113,9 @@ class FirstFragment : Fragment() {
                 tempList.clear()
                 tempList.add(it.thisTaskID)
             }
-        }
-        binding.parentLayout.addView(lc.createDayLayout(curDate, tempList))
+        }*/
+        binding.parentLayout.addView(lc.createDayLayout(curDate.toString(), tempList))
 
-        binding.parentLayout.addView(lc.createDayLayout("2022-05-05", listOf("zero", "two", "five")))
     }
 
     override fun onDestroyView() {

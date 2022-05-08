@@ -8,11 +8,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TaskViewModel : ViewModel() {
-    private var info : MutableLiveData<String> = MutableLiveData("Initial value")
+    private var tasksGet : MutableLiveData<String> = MutableLiveData("Initial value")
     private var infoPost : MutableLiveData<String> = MutableLiveData("Initial value")
 
     fun getInfo() : LiveData<String> {
-        return info
+        return tasksGet
     }
 
     fun getInfoPost() : LiveData<String> {
@@ -20,7 +20,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun makeAllTaskGetRequest() {
-        info.postValue("Waiting")
+        tasksGet.postValue("Waiting")
         val connectManager = InternetConnect()
         viewModelScope.launch(Dispatchers.IO) {
             val result = try {
@@ -29,8 +29,8 @@ class TaskViewModel : ViewModel() {
                 Result.Error(e)
             }
             when (result) {
-                is Result.Success<String> -> info.postValue(result.data)
-                else -> info.postValue("Error")
+                is Result.Success<String> -> tasksGet.postValue(result.data)
+                else -> tasksGet.postValue("Error")
             }
         }
     }

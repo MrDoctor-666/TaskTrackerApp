@@ -2,6 +2,7 @@ package com.example.testapplication2
 
 import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 
 class JSONCreator {
 
@@ -52,8 +53,7 @@ class JSONCreator {
         val jsonObj = JSONObject(json)
         val initialT = jsonObj.getJSONObject("initialTask")
 
-        val prevTaskID : String? = if (jsonObj.isNull("prevTaskID")) null
-        else jsonObj.getString("prevTaskID")
+        val prevTaskID : String? = if (jsonObj.isNull("prevTaskID")) null else jsonObj.getString("prevTaskID")
 
         return Task(
             initialT,
@@ -62,6 +62,15 @@ class JSONCreator {
             if (jsonObj.isNull("nextTaskID")) null else jsonObj.getString("nextTaskID"),
             prevTaskID
         )
+    }
+
+    fun checkIfJSON(jsonString: String) : Boolean {
+        try {
+            val jsonObj = JSONArray(jsonString)
+        } catch (e: Exception){
+            return false
+        }
+        return true
     }
 
 }
