@@ -14,11 +14,11 @@ class InternetConnect() {
     //TODO delete android:usesCleartextTraffic="true" and find some other way
     //this one is not safe??
     private val taskURL = "http://192.168.56.1:8080/"
-    private val taskURL2 = "http://192.168.0.100:8080/display"
+    private val taskURL2 = "http://192.168.0.100:8080/"
     private val taskURL3 = "http://192.168.5.175:8080/"
 
     fun getTasksRequest() : Result<String> {
-        val url = URL(taskURL2)
+        val url = URL(taskURL2 + "display")
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.setRequestProperty("Accept", "application/json")
         val responseCode = urlCon.responseCode
@@ -30,7 +30,7 @@ class InternetConnect() {
     }
 
     fun postTaskRequest(toSend : String) : Result<String>{
-        val url = URL(taskURL2)
+        val url = URL(taskURL2 + "add")
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.requestMethod = "POST"
         urlCon.setRequestProperty("Content-Type", "application/json")

@@ -53,11 +53,13 @@ class SecondFragment : Fragment() {
         }
         model.getInfoPost().observe(this.viewLifecycleOwner, nameObserver)
         binding.buttonSave.setOnClickListener {
-            //model.makePostRequest(JSONCreator().testJSON2())
             model.makePostRequest(JSONCreator().create(
                 binding.editTextTaskName.text.toString(),
                 binding.editEndDate.text.toString(),
-                binding.editRepeatDecimal.text.toString().toInt()
+                binding.editRepeatDecimal.text.toString().toInt(),
+                binding.editRepeatDays.text.toString().toInt(),
+                binding.canSkipCheckBox.isChecked
+
             ))
         }
     }

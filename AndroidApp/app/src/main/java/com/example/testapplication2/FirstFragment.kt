@@ -105,15 +105,10 @@ class FirstFragment : Fragment() {
 
         }
 
-        /*a.forEach {
-            if (curDate == it.date) tempList.add(it.thisTaskID)
-            else {
-                binding.parentLayout.addView(lc.createDayLayout(curDate, tempList))
-                curDate = it.date
-                tempList.clear()
-                tempList.add(it.thisTaskID)
-            }
-        }*/
+        while (curDate.toString() != a[i - 1].date) {
+            binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.toString()))
+            curDate = curDate.plusDays(1)
+        }
         binding.parentLayout.addView(lc.createDayLayout(curDate.toString(), tempList))
 
     }

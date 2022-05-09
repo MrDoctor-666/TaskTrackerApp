@@ -3,6 +3,7 @@ package com.example.testapplication2
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.time.LocalDate
 
 class JSONCreator {
 
@@ -29,13 +30,17 @@ class JSONCreator {
     fun create(
         taskName : String,
         endDate : String,
-        repeat : Int
+        repeat : Int,
+        repeatDays : Int = 1,
+        canSkip : Boolean = false
     ) : String {
         return "{\n" +
                 "  \"id\": 1,\n" +
                 "  \"taskName\": \"$taskName\",\n" +
-                "  \"endDate\": \"$endDate\",\n" +
-                "  \"repeat\": $repeat\n" +
+                "  \"endDate\": \"${LocalDate.now()}\",\n" +
+                "  \"repeat\": $repeat,\n" +
+                "  \"canSkip\": $canSkip,\n" +
+                "  \"repeatDays\": $repeatDays\n" +
                 "}"
     }
 

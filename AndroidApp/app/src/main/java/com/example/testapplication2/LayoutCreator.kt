@@ -8,6 +8,7 @@ class LayoutCreator(
     private val context: Context
 ) {
 
+    private val noTasksText = "No tasks for this day"
 
     fun createDayLayout(date : String, names : List<Task>): LinearLayout {
         val linearLayoutHor = LinearLayout(context)
@@ -65,7 +66,7 @@ class LayoutCreator(
 
         val textView2 = TextView(context)
         textView2.textSize = 18f
-        textView2.text = "No tasks for today"
+        textView2.text = noTasksText
         linearLayoutHor.addView(
             textView2,
             LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 4.0f)
