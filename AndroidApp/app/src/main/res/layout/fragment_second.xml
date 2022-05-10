@@ -10,45 +10,43 @@
         android:id="@+id/textview_second"
         android:layout_width="226dp"
         android:layout_height="30dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_second" />
+        app:layout_constraintTop_toBottomOf="@+id/button_second"
+        app:layout_constraintVertical_bias="0.708" />
 
     <Button
         android:id="@+id/button_second"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/previous"
+        android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.907" />
+        app:layout_constraintVertical_bias="0.942" />
 
     <Button
         android:id="@+id/button_save"
-        android:layout_width="107dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="161dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="20dp"
-        android:text="Button"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="10dp"
+        android:text="Create Task"
         app:layout_constraintBottom_toTopOf="@+id/button_second"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.692"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="410dp"
-        android:layout_height="500dp"
+        android:layout_width="405dp"
+        android:layout_height="529dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/button_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +56,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/editTextTaskName"
@@ -68,20 +66,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
+                android:hint="Text Name"
                 android:inputType="textPersonName"
-                android:text="Task Name"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/editEndDate"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="05.05.2022"
-                android:inputType="date"
                 android:textSize="24sp" />
 
             <LinearLayout
@@ -90,19 +76,47 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="208dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="Date:"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/datePickerButton"
+                    style="?android:spinnerStyle"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Jan 01 2022"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_500"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
                     android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="156dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:text="Repeat Time:"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/editRepeatDecimal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="56dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -129,12 +143,12 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:text="Repeat Days:"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/editRepeatDays"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="56dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -151,11 +165,12 @@
                 android:id="@+id/canSkipCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="30dp"
                 android:text="Can skip this task?"
                 android:textAlignment="viewStart"
+                android:textColor="@color/purple_500"
                 android:textSize="24sp" />
 
         </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.testapplication2
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,8 +31,6 @@ class FirstFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val testStr = "[{\"initialTask\":{\"thisTaskid\":\"217884b8-a526-4664-9d76-f7162ee1aca1\",\"taskName\":\"TestFromProgram1\",\"endDate\":\"2022-04-01\",\"repeat\":3,\"canSkip\":true,\"repeatDays\":2,\"tag\":null,\"color\":0,\"note\":null},\"thisTaskID\":\"c2\",\"date\":\"2022-04-08\",\"nextTaskID\":\"fc709856-6096-4af1-813d-bd85749caa39\",\"previousTaskID\":null}, {\"initialTask\":{\"thisTaskid\":\"217884b8-a526-4664-9d76-f7162ee1aca1\",\"taskName\":\"TestFromProgram1\",\"endDate\":\"2022-04-01\",\"repeat\":3,\"canSkip\":true,\"repeatDays\":2,\"tag\":null,\"color\":0,\"note\":null},\"thisTaskID\":\"cf2f8239-f251-47c6-beb9-2a495ba39b72\",\"date\":\"2022-04-01\",\"nextTaskID\":\"fc709856-6096-4af1-813d-bd85749caa39\",\"previousTaskID\":null}]"
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,8 +51,6 @@ class FirstFragment : Fragment() {
             //eventDetails = Bundle();
             //eventDetails.putString("my_message", "Clicked that button");
             //analytics.logEvent("test_button_click", eventDetails);
-
-            binding.checkBoxFirst.isChecked = true
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
@@ -72,15 +67,19 @@ class FirstFragment : Fragment() {
             model.makeAllTaskGetRequest()
         }
 
-        tasksDisplay(testStr)
+        tasksDisplay("")
     }
 
     private fun tasksDisplay(tasksString: String){
-
         if (!JSONCreator().checkIfJSON(tasksString)) return
 
         binding.parentLayout.removeAllViews()
         val lc = LayoutCreator(this.requireContext())
+
+        if (tasksString.isEmpty() || tasksString.isBlank()){
+            binding.parentLayout.addView(lc.createEmptyDayLayout(LocalDate.now().toString()))
+            return
+        }
 
         val a = JSONCreator().parseListTasksJSON(tasksString) //all tasks
         var curDate = LocalDate.parse(a[0].date)

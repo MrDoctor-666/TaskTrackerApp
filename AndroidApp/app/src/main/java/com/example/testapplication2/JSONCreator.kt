@@ -2,8 +2,6 @@ package com.example.testapplication2
 
 import org.json.JSONArray
 import org.json.JSONObject
-import org.json.JSONTokener
-import java.time.LocalDate
 
 class JSONCreator {
 
@@ -37,7 +35,7 @@ class JSONCreator {
         return "{\n" +
                 "  \"id\": 1,\n" +
                 "  \"taskName\": \"$taskName\",\n" +
-                "  \"endDate\": \"${LocalDate.now()}\",\n" +
+                "  \"endDate\": \"$endDate\",\n" +
                 "  \"repeat\": $repeat,\n" +
                 "  \"canSkip\": $canSkip,\n" +
                 "  \"repeatDays\": $repeatDays\n" +
@@ -71,7 +69,7 @@ class JSONCreator {
 
     fun checkIfJSON(jsonString: String) : Boolean {
         try {
-            val jsonObj = JSONArray(jsonString)
+            JSONArray(jsonString)
         } catch (e: Exception){
             return false
         }
@@ -86,5 +84,4 @@ class Task(
     val date: String,
     val nextTaskID : String?,
     val prevTaskID : String?
-){
-}
+)
