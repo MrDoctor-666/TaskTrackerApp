@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.testapplication2.databinding.FragmentFirstBinding
+import com.example.testapplication2.models.TaskViewModel
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -82,6 +84,11 @@ class FirstFragment : Fragment() {
         }
 
         val a = JSONCreator().parseListTasksJSON(tasksString) //all tasks
+        if (a.isEmpty()){
+            binding.parentLayout.addView(lc.createEmptyDayLayout(LocalDate.now().format(
+                DateTimeFormatter.ofPattern("dd MMMM"))))
+            return
+        }
         var curDate = LocalDate.parse(a[0].date)
         var i = 0
         val tempList = mutableListOf<Task>()
@@ -90,11 +97,13 @@ class FirstFragment : Fragment() {
             when {
                 curDate.toString() == a[i].date -> { tempList.add(a[i]); i++}//
                 a.find { it.date == curDate.toString() } == null -> { //если такой даты нет
-                    binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.toString()))
+                    binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.format(
+                        DateTimeFormatter.ofPattern("dd MMMM"))))
                     curDate = curDate.plusDays(1)
                 }
                 else -> { //если такая дата есть, но элементы закончились
-                    binding.parentLayout.addView(lc.createDayLayout(curDate.toString(), tempList))
+                    binding.parentLayout.addView(lc.createDayLayout(curDate.format(
+                        DateTimeFormatter.ofPattern("dd MMMM")), tempList))
                     curDate = curDate.plusDays(1)
                     tempList.clear()
                     tempList.add(a[i])
@@ -105,10 +114,12 @@ class FirstFragment : Fragment() {
         }
 
         while (curDate.toString() != a[i - 1].date) {
-            binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.toString()))
+            binding.parentLayout.addView(lc.createEmptyDayLayout(curDate.format(
+                DateTimeFormatter.ofPattern("dd MMMM"))))
             curDate = curDate.plusDays(1)
         }
-        binding.parentLayout.addView(lc.createDayLayout(curDate.toString(), tempList))
+        binding.parentLayout.addView(lc.createDayLayout(curDate.format(
+            DateTimeFormatter.ofPattern("dd MMMM")), tempList))
 
     }
 

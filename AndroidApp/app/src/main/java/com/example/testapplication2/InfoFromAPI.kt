@@ -14,11 +14,12 @@ class InternetConnect() {
     //TODO delete android:usesCleartextTraffic="true" and find some other way
     //this one is not safe??
     private val taskURL = "http://192.168.56.1:8080/"
-    private val taskURL2 = "http://192.168.0.100:8080/"
+    private val taskURL2 = "http://192.168.0.101:8080/"
     private val taskURL3 = "http://192.168.5.175:8080/"
+    private val curID = taskURL2
 
     fun getTasksRequest() : Result<String> {
-        val url = URL(taskURL2 + "display")
+        val url = URL(curID + "display")
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.setRequestProperty("Accept", "application/json")
         val responseCode = urlCon.responseCode
@@ -30,7 +31,7 @@ class InternetConnect() {
     }
 
     fun postTaskRequest(toSend : String) : Result<String>{
-        val url = URL(taskURL2 + "add")
+        val url = URL(curID + "add")
         val urlCon = url.openConnection() as HttpURLConnection
         urlCon.requestMethod = "POST"
         urlCon.setRequestProperty("Content-Type", "application/json")
@@ -38,6 +39,44 @@ class InternetConnect() {
 
         val outputStreamWriter = OutputStreamWriter(urlCon.outputStream)
         outputStreamWriter.write(toSend)
+        outputStreamWriter.flush()
+
+        val responseCode = urlCon.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val response = urlCon.inputStream.bufferedReader().use { it.readText() }
+            return Result.Success(response)
+        }
+        return Result.Error(Exception("Cannot open HttpURLConnection"))
+    }
+
+    fun postCompleteTask(id : String) : Result<String>{
+        val url = URL(curID + "display/complete")
+        val urlCon = url.openConnection() as HttpURLConnection
+        urlCon.requestMethod = "POST"
+        urlCon.setRequestProperty("Content-Type", "application/json")
+        urlCon.setRequestProperty("Accept", "application/json")
+
+        val outputStreamWriter = OutputStreamWriter(urlCon.outputStream)
+        outputStreamWriter.write(id)
+        outputStreamWriter.flush()
+
+        val responseCode = urlCon.responseCode
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val response = urlCon.inputStream.bufferedReader().use { it.readText() }
+            return Result.Success(response)
+        }
+        return Result.Error(Exception("Cannot open HttpURLConnection"))
+    }
+
+    fun postSkipTask(id : String) : Result<String>{
+        val url = URL(curID + "display/skip")
+        val urlCon = url.openConnection() as HttpURLConnection
+        urlCon.requestMethod = "POST"
+        urlCon.setRequestProperty("Content-Type", "application/json")
+        urlCon.setRequestProperty("Accept", "application/json")
+
+        val outputStreamWriter = OutputStreamWriter(urlCon.outputStream)
+        outputStreamWriter.write(id)
         outputStreamWriter.flush()
 
         val responseCode = urlCon.responseCode

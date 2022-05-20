@@ -1,9 +1,11 @@
-package com.example.testapplication2
+package com.example.testapplication2.models
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapplication2.InternetConnect
+import com.example.testapplication2.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
